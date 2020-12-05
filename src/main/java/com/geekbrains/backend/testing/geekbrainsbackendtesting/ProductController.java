@@ -32,6 +32,8 @@ public class ProductController {
         return productRepository.save(product);
     }
 
+    //Обработать запрос вида: GET /products/filtered?min_price=100. В результате должен вернуться список товаров,
+    //цена которых >= 100
     @GetMapping("/filtered")
     public List<Product> getAllProductsMinPrice(@RequestParam(name = "min_price") int minPrice) {
         return productRepository.findAll().stream()
@@ -39,12 +41,14 @@ public class ProductController {
                 .collect(Collectors.toList());
     }
 
+    //Обработать запрос вида: GET /products/delete/1. В результате должен удалиться товар с соответствующим id
     @GetMapping("/delete/{id}")
     public String deleteProductById(@PathVariable Long id) {
         productRepository.deleteById(id);
         return "Product #" + id  + " deleted successfully";
     }
 
+    //* Попробуйте реализовать возможность изменения названия товара по id. Что-то вроде: /products/{id}/change_title...
     @GetMapping("/{id}/change_title")
     public String changeProductTitleById(@PathVariable Long id, @RequestParam String title) {
         Product product = productRepository.findById(id).get();
